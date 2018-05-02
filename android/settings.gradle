@@ -1,0 +1,5 @@
+rootProject.name = 'reactnativeintegration'
+include ':react-native-tapresearch'
+project(':react-native-tapresearch').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-tapresearch/android/app')
+
+include ':app'
