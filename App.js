@@ -51,6 +51,7 @@ export default class App extends React.Component {
   _onSurveyButtonPressed = () => {
     if (typeof this.placement !== 'undefined' && this.placement.isSurveyWallAvailable) {
          console.log("showing survey wall")
+         console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`)
          RNTapResearch.showSurveyWall(this.placement)
       } else {
         console.log("The survey wall isn't available")
