@@ -1,16 +1,14 @@
 import React from 'react';
 import RNTapResearch from 'react-native-tapresearch';
-import { tapResearchEmitter } from 'react-native-tapresearch';
+import { tapResearchEmitter, PLACEMENT_CODE_SDK_NOT_READY } from 'react-native-tapresearch';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default class App extends React.Component {
 
   render() {
-    RNTapResearch.initPlacement(PLACEMENT_IDENTIFIER, (placement) => {
-        console.log(placement)
-        this.placement = placement
-    })
+    RNTapResearch.initPlacementEvent(PLACEMENT_IDENTIFIER);
+
     return (
       <View style={styles.container}>
         <Text style={styles.description}>
@@ -44,37 +42,54 @@ export default class App extends React.Component {
     this.tapResearchOnReceiveReward = tapResearchEmitter.addListener(
       'tapResearchOnReceivedReward',
       this.onRecieveReward
-    )
+    );
 
+    this.tapResearchOnPlacementReady = tapResearchEmitter.addListener(
+      'tapResearchOnPlacementReady',
+      this.onPlacementReady
+    );
+
+  }
+
+  onPlacementReady = (placement) => {
+    if (placement.placementCode != PLACEMENT_CODE_SDK_NOT_READY) {
+        if (placement.isSurveyWallAvailable) {
+            this.placement = placement
+        } else {
+            console.log("Not showing survey wall");
+        }
+      } else {
+        console.log("The SDK is not ready");
+      }
   }
 
   _onSurveyButtonPressed = () => {
     if (typeof this.placement !== 'undefined' && this.placement.isSurveyWallAvailable) {
-         console.log("showing survey wall")
-         console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`)
-         RNTapResearch.showSurveyWall(this.placement)
+         console.log("Showing the survey wall");
+         console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`);
+         RNTapResearch.showSurveyWall(this.placement);
       } else {
-        console.log("The survey wall isn't available")
+        console.log("The survey wall isn't available");
       }
   }
 
   onSurveyWallOpened = (placement) => {
-    console.log("onSurveyWallOpened")
+    console.log("onSurveyWallOpened");
   }
 
   onSurveyWallClosed = (placement) => {
-    console.log("onSurveyWallClosed")
+    console.log("onSurveyWallClosed");
   }
 
   onRecieveReward = (reward) => {
-    console.log(reward)
+    console.log(reward);
   }
 
 }
 
 const styles = StyleSheet.create({
   description: {
-    marginBottom: 20,
+    marginBottom: 20
     fontSize: 18,
     textAlign: 'center',
     color: '#656565'
