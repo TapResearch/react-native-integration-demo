@@ -1,25 +1,30 @@
 {
-  "name": "react-native-integration",
-  "version": "0.1.0",
+  "name": "TapResearchDemo",
+  "version": "0.0.1",
   "private": true,
-  "devDependencies": {
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "^22.4.4",
-    "jest-react-native": "^18.0.0",
-    "react-test-renderer": "16.3.1"
-  },
   "scripts": {
-    "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "jest"
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-native": "0.63.2",
+    "react-native-tapresearch": "^2.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/runtime": "^7.11.2",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.7.0",
+    "jest": "^26.4.2",
+    "metro-react-native-babel-preset": "^0.63.0",
+    "react-test-renderer": "16.13.1"
   },
   "jest": {
     "preset": "react-native"
-  },
-  "dependencies": {
-    "react": "16.3.1",
-    "react-native": "^0.55.4",
-    "react-native-tapresearch": "2.0.4"
   }
 }
