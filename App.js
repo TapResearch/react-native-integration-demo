@@ -1,91 +1,116 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import RNTapResearch from 'react-native-tapresearch';
 import { tapResearchEmitter, PLACEMENT_CODE_SDK_NOT_READY } from 'react-native-tapresearch';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default class App extends React.Component {
-
-  render() {
-    RNTapResearch.initPlacementEvent(PLACEMENT_IDENTIFIER);
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.description}>
-          Press the button below to take a survey!
-        </Text>
-        <View style={styles.flowRight}>
-          <Button
-            onPress={this._onSurveyButtonPressed}
-            color='#48BBEC'
-            title='Take Survey'
-          />
-        </View>
-      </View>
-    );
-  }
-
-  componentWillMount() {
+export default App = () => {
+  useEffect(() => {
     RNTapResearch.initWithApiToken(API_TOKEN);
-    RNTapResearch.setUniqueUserIdentifier(UNIQUE_USER_IDENTIFIER)
+    RNTapResearch.setUniqueUserIdentifier(UNIQUE_USER_IDENTIFIER);
+    RNTapResearch.setReceiveRewardCollection(false);
 
-    this.tapResearchOnSurveyWallOpened = tapResearchEmitter.addListener(
-        'tapResearchOnSurveyWallOpened',
-        this.onSurveyWallOpened
+    const tapResearchOnSurveyWallOpened = tapResearchEmitter.addListener(
+      'tapResearchOnSurveyWallOpened',
+      onSurveyWallOpened
     );
 
-    this.tapResearchOnSurveyWallClosed = tapResearchEmitter.addListener(
-        'tapResearchOnSurveyWallDismissed',
-        this.onSurveyWallClosed
+    const tapResearchOnSurveyWallClosed = tapResearchEmitter.addListener(
+      'tapResearchOnSurveyWallDismissed',
+      onSurveyWallClosed
     );
 
-    this.tapResearchOnReceiveReward = tapResearchEmitter.addListener(
+    const tapResearchOnReceiveReward = tapResearchEmitter.addListener(
       'tapResearchOnReceivedReward',
-      this.onRecieveReward
+      onRecieveReward
     );
 
-    this.tapResearchOnPlacementReady = tapResearchEmitter.addListener(
+    const tapResearchOnPlacementReady = tapResearchEmitter.addListener(
       'tapResearchOnPlacementReady',
-      this.onPlacementReady
+      onPlacementReady
     );
 
-  }
+    const tapResearchOnReceivedRewardCollection = tapResearchEmitter.addListener(
+      'tapResearchOnReceivedRewardCollection',
+      onReceiveRewardCollection
+    );
 
-  onPlacementReady = (placement) => {
-    if (placement.placementCode != PLACEMENT_CODE_SDK_NOT_READY) {
-        if (placement.isSurveyWallAvailable) {
-            this.placement = placement
-        } else {
-            console.log("Not showing survey wall");
-        }
-      } else {
-        console.log("The SDK is not ready");
-      }
-  }
+    return () => {
+      tapResearchEmitter.removeSubscription(tapResearchOnSurveyWallClosed);
+      tapResearchEmitter.removeSubscription(tapResearchOnSurveyWallOpened);
+      tapResearchEmitter.removeSubscription(tapResearchOnReceiveReward);
+      tapResearchEmitter.removeSubscription(tapResearchOnPlacementReady);
+      tapResearchEmitter.removeSubscription(tapResearchOnReceivedRewardCollection);
+    }
+  }, [])
 
-  _onSurveyButtonPressed = () => {
-    if (typeof this.placement !== 'undefined' && this.placement.isSurveyWallAvailable) {
-         console.log("Showing the survey wall");
-         console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`);
-         RNTapResearch.showSurveyWall(this.placement);
-      } else {
-        console.log("The survey wall isn't available");
-      }
-  }
-
-  onSurveyWallOpened = (placement) => {
-    console.log("onSurveyWallOpened");
-  }
-
-  onSurveyWallClosed = (placement) => {
-    console.log("onSurveyWallClosed");
-  }
-
-  onRecieveReward = (reward) => {
-    console.log(reward);
-  }
-
+  return (
+    <View style={styles.container}>
+      <Text style={styles.description}>
+        Press the button below to take a survey!
+      </Text>
+      <View style={styles.flowRight}>
+        <Button
+          style={styles.button}
+          onPress={onPlacementRequested}
+          color='#48BBEC'
+          title='get placement'
+        />
+        <Button
+          style={styles.button}
+          onPress={onSurveyButtonPressed}
+          color='#48BBEC'
+          title='Take Survey'
+        />
+      </View>
+    </View>
+  );
 }
+
+const onPlacementReady = (placement) => {
+  console.log(placement);
+  if (placement.placementCode != PLACEMENT_CODE_SDK_NOT_READY) {
+    if (placement.isSurveyWallAvailable) {
+      this.placement = placement
+    } else {
+      console.log("Not showing survey wall");
+    }
+  } else {
+    console.log("The SDK is not ready");
+  }
+}
+
+const onPlacementRequested = () => {
+  RNTapResearch.initPlacementEvent(PLACEMENT_IDENTIFIER);
+}
+
+const onSurveyButtonPressed = () => {
+  if (typeof this.placement !== 'undefined' && this.placement.isSurveyWallAvailable) {
+    console.log("Showing the survey wall");
+    console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`);
+    RNTapResearch.showSurveyWall(this.placement);
+  } else {
+    console.log("The survey wall isn't available");
+  }
+}
+
+const onSurveyWallOpened = (placement) => {
+  console.log("onSurveyWallOpened");
+}
+
+const onSurveyWallClosed = (placement) => {
+  console.log("onSurveyWallClosed");
+}
+
+const onRecieveReward = (reward) => {
+  console.log(reward);
+}
+
+const onReceiveRewardCollection = (rewards) => {
+  console.log(rewards);
+}
+
+
 
 const styles = StyleSheet.create({
   description: {
@@ -99,9 +124,12 @@ const styles = StyleSheet.create({
     marginTop: 100,
     alignItems: 'center'
   },
+  button: {
+    margin: 24,
+  },
   flowRight: {
     marginTop: 50,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
   },
