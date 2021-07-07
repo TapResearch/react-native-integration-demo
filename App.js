@@ -22,7 +22,7 @@ export default App = () => {
 
     const tapResearchOnReceiveReward = tapResearchEmitter.addListener(
       'tapResearchOnReceivedReward',
-      onRecieveReward
+      onReceiveReward
     );
 
     const tapResearchOnPlacementReady = tapResearchEmitter.addListener(
@@ -102,7 +102,7 @@ const onSurveyWallClosed = (placement) => {
   console.log("onSurveyWallClosed");
 }
 
-const onRecieveReward = (reward) => {
+const onReceiveReward = (reward) => {
   console.log(reward);
 }
 
