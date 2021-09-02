@@ -30,6 +30,16 @@ export default App = () => {
       onPlacementReady
     );
 
+    const tapResearchOnPlacementEventReady = tapResearchEmitter.addListener(
+      'tapResearchOnPlacementEventReady',
+      onPlacementEventReady
+    );
+
+    const tapResearchOnPlacementUnavailable = tapResearchEmitter.addListener(
+      'tapResearchOnPlacementUnavailable',
+      onPlacementUnavailable
+    );
+
     const tapResearchOnReceivedRewardCollection = tapResearchEmitter.addListener(
       'tapResearchOnReceivedRewardCollection',
       onReceiveRewardCollection
@@ -40,7 +50,9 @@ export default App = () => {
       tapResearchEmitter.removeSubscription(tapResearchOnSurveyWallOpened);
       tapResearchEmitter.removeSubscription(tapResearchOnReceiveReward);
       tapResearchEmitter.removeSubscription(tapResearchOnPlacementReady);
+      tapResearchEmitter.removeSubscription(tapResearchOnPlacementEventReady);
       tapResearchEmitter.removeSubscription(tapResearchOnReceivedRewardCollection);
+      tapResearchEmitter.removeSubscription(tapResearchOnPlacementUnavailable);
     }
   }, [])
 
@@ -50,12 +62,6 @@ export default App = () => {
         Press the button below to take a survey!
       </Text>
       <View style={styles.flowRight}>
-        <Button
-          style={styles.button}
-          onPress={onPlacementRequested}
-          color='#48BBEC'
-          title='get placement'
-        />
         <Button
           style={styles.button}
           onPress={onSurveyButtonPressed}
@@ -80,15 +86,30 @@ const onPlacementReady = (placement) => {
   }
 }
 
-const onPlacementRequested = () => {
-  RNTapResearch.initPlacementEvent(PLACEMENT_IDENTIFIER);
+const onPlacementEventReady = (placement) => {
+  console.log("onplacement event ready ")
+  console.log(placement);
+  if (placement.placementCode != PLACEMENT_CODE_SDK_NOT_READY) {
+    if (placement.isSurveyWallAvailable) {
+      this.placement = placement
+    } else {
+      console.log("Not showing survey wall");
+    }
+  } else {
+    console.log("The SDK is not ready");
+  }
+}
+
+
+const onPlacementUnavailable = (placementId) => {
+  console.log("placement unavailable: " + placementId.placementId)
 }
 
 const onSurveyButtonPressed = () => {
   if (typeof this.placement !== 'undefined' && this.placement.isSurveyWallAvailable) {
     console.log("Showing the survey wall");
     console.log(`Is a hot survey = ${this.placement.hasHotSurvey}`);
-    RNTapResearch.showSurveyWall(this.placement);
+    RNTapResearch.showSurveyWallParams(this.placement, { "foos": "buzz", "fizz": "boos" });
   } else {
     console.log("The survey wall isn't available");
   }
@@ -109,8 +130,6 @@ const onReceiveReward = (reward) => {
 const onReceiveRewardCollection = (rewards) => {
   console.log(rewards);
 }
-
-
 
 const styles = StyleSheet.create({
   description: {
