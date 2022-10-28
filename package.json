@@ -10,9 +10,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "react": "17.0.2",
-    "react-native": "0.66.3",
-    "react-native-tapresearch": "^2.4.1"
+    "react": "18.1.0",
+    "react-native": "0.70.4",
+    "react-native-tapresearch": "file:../react-native-tapresearch"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
