@@ -4,8 +4,14 @@
  *
  * @format
  */
+const np = require('node:process');
 
+const packagePath = np.cwd() + '/../react-native-tapresearch';
 module.exports = {
+  resolver: {
+    nodeModulesPaths: [np.cwd() + 'ios', packagePath, np.cwd() + '/node_modules'],
+  },
+  watchFolders: [packagePath],
   transformer: {
     getTransformOptions: async () => ({
       transform: {

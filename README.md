@@ -1,18 +1,32 @@
-# TapResearch React Native Integration Demo
+# Example repo
 
-## Build
-* Create a new react native App
-* Make sure the project is a native project [link](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md)
-* Import the TapResearch React Native SDK
-~~~
-npm i react-native-tapresearch -S
-react-native link react-native-tapresearch
-~~~
-* Pull / Download the repo and copy the files to the new project
-* Grab your app api token from the [Supplier Dashboard](https://www.tapresearch.com/supplier_dashboard/overview) and replace the `API_TOKEN` variable in `App.js`
-* Grab a placement identifier from the [Supplier Dashboard](https://www.tapresearch.com/supplier_dashboard/overview) and replace the `PLACEMENT_IDENTIFIER` variable in `App.js`
-* In  build.gradle of your app add `maven { url "https://artifactory.tools.tapresearch.io/artifactory/tapresearch-android-sdk/" }` in the allprojects/repositories section
+## installation
 
-* In the command line execute `react-native run-android` / `react-native run-ios`
+We need to use version 11 of jdk
 
-[TapResearch React Native SDK integration guide](https://www.tapresearch.com/docs/react-native-integration-guide).
+```
+[ -s "/Users/mike/.jabba/jabba.sh" ] && source "/Users/mike/.jabba/jabba.sh" && jabba use zulu@1.11.0-10
+```
+
+If you are testing the react native release, then run the following in the package directory
+
+```cd react-native-tapresearch && npm link```
+
+Then link in the this directory `npm link react-native-tapresearch` and add the following to the dependencies section in package.json
+`"react-native-tapresearch": "file:../react-native-tapresearch"`
+
+### Running the example
+
+```
+export RCT_METRO_PORT=8088
+# This is for adb and stuff
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+```
+
+Run the thing `npx react-native start` <- This starts a listener for reloads and stuff
+
+`npx react-native run-android`
+
+To listen to the logs `adb logcat *:S ReactNative:V ReactNativeJS:V TRLogTag WritableMapHelper`
