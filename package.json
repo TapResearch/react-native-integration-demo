@@ -12,7 +12,9 @@
   "dependencies": {
     "react": "18.1.0",
     "react-native": "0.70.6",
-    "react-native-tapresearch": "^2.5.0"
+    "react-native-toast-message": "^2.1.5",
+    "react-native-tapresearch": "file:../react-native-tapresearch",
+    "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
