@@ -3,16 +3,20 @@ import {StyleSheet, Text, View} from 'react-native';
 import Placements from './components/Placements';
 import Toast from 'react-native-toast-message';
 import {LogBox} from 'react-native';
+import {TAP_RN_API_TOKEN} from '@env';
 
 // Ignore log notification warnings for the native emitter:
 LogBox.ignoreAllLogs(true);
 
 // currently set to server to server
-export const API_TOKEN = '3b2e8639e3db714f98e1078822de673a';
+// export const TAP_RN_API_TOKEN = process.env.TAP_RN_API_TOKEN;
+export const API_TOKEN = TAP_RN_API_TOKEN;
 export const UNIQUE_USER_IDENTIFIER = 'test-user-from-github';
 
 // eslint-disable-next-line no-undef
 export default App = () => {
+  console.log('API_TOKEN', TAP_RN_API_TOKEN);
+  console.log('process.env', process.env);
   return (
     <>
       <View style={styles.container}>
