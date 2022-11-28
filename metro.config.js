@@ -4,9 +4,9 @@
  *
  * @format
  */
-const np = require('node:process');
+// const np = require('node:process');
 
-// Remove this once the changes are public
+// Used to test local changes
 // const packagePath = np.cwd() + '/../react-native-tapresearch';
 module.exports = {
   resolver: {

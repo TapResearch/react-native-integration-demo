@@ -11,6 +11,7 @@ LogBox.ignoreAllLogs(true);
 export const API_TOKEN = '3b2e8639e3db714f98e1078822de673a';
 export const UNIQUE_USER_IDENTIFIER = 'test-user-from-github';
 
+// eslint-disable-next-line no-undef
 export default App = () => {
   return (
     <>
@@ -19,13 +20,10 @@ export default App = () => {
           Press the button below to take a survey!
         </Text>
         <View style={styles.flowRight}>
-          <Placements/>
+          <Placements />
         </View>
       </View>
-      <Toast
-        position="bottom"
-        bottomOffset={80}
-      />
+      <Toast position="bottom" bottomOffset={80} />
     </>
   );
 };

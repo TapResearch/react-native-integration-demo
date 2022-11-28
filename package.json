@@ -12,7 +12,7 @@
   "dependencies": {
     "react": "18.1.0",
     "react-native": "0.70.6",
-    "react-native-tapresearch": "github:TapResearch/react-native-tapresearch#76e5fb7a8af266090454a514883998ca3d5cb0a1",
+    "react-native-tapresearch": "github:TapResearch/react-native-tapresearch#68f71b34f45075889a327061295282056c135386",
     "react-native-toast-message": "^2.1.5",
     "react-native-uuid": "^2.0.1"
   },

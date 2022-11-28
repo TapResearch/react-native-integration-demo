@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, Button} from 'react-native';
 import RNTapResearch from 'react-native-tapresearch';
-import {tapResearchEmitter, PLACEMENT_CODE_SDK_NOT_READY} from 'react-native-tapresearch';
+import {
+  tapResearchEmitter,
+  PLACEMENT_CODE_SDK_NOT_READY,
+} from 'react-native-tapresearch';
 import {API_TOKEN, UNIQUE_USER_IDENTIFIER} from '../App';
-import LoadingView from 'react-native/Libraries/Utilities/LoadingView';
-import uuid from 'react-native-uuid';
 import Toast from 'react-native-toast-message';
-
 
 class Placements extends React.Component {
   constructor(props) {
@@ -24,15 +24,15 @@ class Placements extends React.Component {
     // - addListener returns an unsubscriber instead of a more complex object with eventType etc. We should update this at some point
     this.tapResearchOnPlacementUnavailable = tapResearchEmitter.addListener(
       'tapResearchOnPlacementUnavailable',
-      (placement) => {
+      placement => {
         this.onPlacementUnavailable(placement);
       },
     );
-    this.setState({ buttonPressed: false });
+    this.setState({buttonPressed: false});
 
     this.tapResearchOnReceivedRewardCollection = tapResearchEmitter.addListener(
       'tapResearchOnReceivedRewardCollection',
-      (rewards) => {
+      rewards => {
         console.log('tapResearchOnReceivedRewardCollection', rewards);
         this.onReceiveRewardCollection(rewards);
       },
@@ -40,7 +40,7 @@ class Placements extends React.Component {
 
     this.tapResearchOnReceiveReward = tapResearchEmitter.addListener(
       'tapResearchOnReceivedReward',
-      (reward) => {
+      reward => {
         console.log('tapResearchOnReceivedReward', reward);
         this.onReceiveReward(reward);
       },
@@ -48,7 +48,7 @@ class Placements extends React.Component {
 
     this.tapResearchOnSurveyWallOpened = tapResearchEmitter.addListener(
       'tapResearchOnSurveyWallOpened',
-      (placement) => {
+      placement => {
         console.log('tapResearchOnSurveyWallOpened');
         this.onSurveyWallOpened(placement);
       },
@@ -65,7 +65,7 @@ class Placements extends React.Component {
 
     this.tapResearchOnPlacementReady = tapResearchEmitter.addListener(
       'tapResearchOnPlacementReady',
-      (placement) => {
+      placement => {
         console.log('TR Placement Event Ready');
         this.onPlacementReady(placement);
       },
@@ -75,11 +75,6 @@ class Placements extends React.Component {
 
     console.log('Initializing TapResearch');
     RNTapResearch.initWithApiToken(API_TOKEN);
-    /*
-      Don't actually use this uuid generator in production, this is just for testing so we will always
-      be sent to the profiler
-     */
-    // RNTapResearch.setUniqueUserIdentifier(uuid.v4());
     RNTapResearch.setUniqueUserIdentifier(UNIQUE_USER_IDENTIFIER);
     /*
       Setting to true will use the callback event tapResearchOnReceivedRewardCollection
@@ -94,12 +89,16 @@ class Placements extends React.Component {
     return (
       <View key={this.state.placements.length}>
         {this.state.placements.length > 0 &&
-          this.state.placements.map((placement) => (
-            <View style={styles.container} key={placement.placementIdentifier + 'a'}>
+          this.state.placements.map(placement => (
+            <View
+              style={styles.container}
+              key={placement.placementIdentifier + 'a'}>
               <Button
                 key={placement.placementIdentifier}
                 onPress={() => this.onSurveyButtonPressed(placement)}
-                title={`Show ${placement.isEventAvailable ? 'Event' : 'Survey Wall'} for "${placement.currencyName}"
+                title={`Show ${
+                  placement.isEventAvailable ? 'Event' : 'Survey Wall'
+                } for "${placement.currencyName}"
                 ${placement.placementIdentifier}`}
                 color={placement.isEventAvailable ? 'green' : 'blue'}
               />
@@ -107,8 +106,7 @@ class Placements extends React.Component {
           ))}
       </View>
     );
-  };
-
+  }
 
   componentWillUnmount() {
     console.log('unmounting');
@@ -121,30 +119,34 @@ class Placements extends React.Component {
     this.tapResearchOnPlacementUnavailable.remove();
   }
 
-  onPlacementReady = (placement) => {
+  onPlacementReady = placement => {
     console.log('onPlacementReady: ', placement);
     console.log('Ready?: ', placement.isSurveyWallAvailable);
     console.log('hasHotSurvey?: ', placement.hasHotSurvey);
     // Check to make sure we don't already have the placement in state. There is probably a better way to do this.
-    if (placement.placementCode !== PLACEMENT_CODE_SDK_NOT_READY && !this.state.placements.map((p) => {
-      return p.placementIdentifier;
-    }).includes(placement.placementIdentifier)) {
-      this.setState({ placements: [ ...this.state.placements, placement ] });
+    if (
+      placement.placementCode !== PLACEMENT_CODE_SDK_NOT_READY &&
+      !this.state.placements
+        .map(p => {
+          return p.placementIdentifier;
+        })
+        .includes(placement.placementIdentifier)
+    ) {
+      this.setState({placements: [...this.state.placements, placement]});
     } else {
       if (placement.placementCode === PLACEMENT_CODE_SDK_NOT_READY) {
         console.log('The SDK is not ready');
       } else {
         console.log('Placement already exists');
       }
-
     }
   };
 
-  onPlacementUnavailable = (placement) => {
+  onPlacementUnavailable = placement => {
     console.log('placement unavailable: ' + placement.placementId);
   };
 
-  onSurveyButtonPressed = (placement) => {
+  onSurveyButtonPressed = placement => {
     if (typeof placement !== 'undefined' && placement.isSurveyWallAvailable) {
       console.log('Showing the survey wall');
       console.log(`Is a hot survey = ${placement.hasHotSurvey}`);
@@ -153,46 +155,55 @@ class Placements extends React.Component {
         // Alternatively, with passing params
         // RNTapResearch.displayEventWithParams(placement, { 'foos': 'buzz', 'fizz': 'boos' })
       } else {
-        RNTapResearch.showSurveyWallWithParams(placement, { 'foos': 'buzz', 'fizz': 'boos' });
+        RNTapResearch.showSurveyWallWithParams(placement, {
+          foos: 'buzz',
+          fizz: 'boos',
+        });
         // Alternatively, with passing without params
         // RNTapResearch.showSurveyWall(placement);
       }
     } else {
-      console.log('The survey wall isn\'t available', placement);
+      console.log("The survey wall isn't available", placement);
     }
   };
 
-  onSurveyWallOpened = (placement) => {
+  onSurveyWallOpened = placement => {
     console.log('onSurveyWallOpened with placement: ', placement);
   };
 
-
   onSurveyWallClosed = () => {
-    Toast.show({ type: 'info', text1: 'Survey Wall Closed', position: 'bottom', autoHide: false, onPress: () => Toast.hide() });
+    Toast.show({
+      type: 'info',
+      text1: 'Survey Wall Closed',
+      position: 'bottom',
+      autoHide: false,
+      onPress: () => Toast.hide(),
+    });
     console.log('onSurveyWallClosed');
   };
 
-
-  onReceiveReward = (reward) => {
+  onReceiveReward = reward => {
     console.log(reward);
   };
 
-
-  onReceiveRewardCollection = (rewards) => {
+  onReceiveRewardCollection = rewards => {
     console.log('rewards: ', rewards);
-    const sum = rewards.reduce((partialSum, reward) => partialSum + reward.rewardAmount, 0);
-    this.showToast(`Rewards ${sum} of ${rewards[rewards.length - 1].currencyName}`);
-    // LoadingView.showMessage(`Rewards ${sum} of ${rewards[rewards.length - 1].currencyName}`, 'refresh');
+    const sum = rewards.reduce(
+      (partialSum, reward) => partialSum + reward.rewardAmount,
+      0,
+    );
+    this.showToast(
+      `Rewards ${sum} of ${rewards[rewards.length - 1].currencyName}`,
+    );
   };
 
-  showToast = (text) => {
+  showToast = text => {
     Toast.show({
       type: 'success',
       text1: text,
       text2: 'This is some something 👋',
     });
   };
-
 }
 
 const styles = StyleSheet.create({
