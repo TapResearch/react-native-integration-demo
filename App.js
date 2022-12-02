@@ -15,8 +15,6 @@ export const UNIQUE_USER_IDENTIFIER = 'test-user-from-github';
 
 // eslint-disable-next-line no-undef
 export default App = () => {
-  console.log('API_TOKEN', TAP_RN_API_TOKEN);
-  console.log('process.env', process.env);
   return (
     <>
       <View style={styles.container}>
