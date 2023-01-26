@@ -63,6 +63,23 @@ class Placements extends React.Component {
       },
     );
 
+    this.tapResearchOnEventOpened = tapResearchEmitter.addListener(
+      'tapResearchOnEventOpened',
+      placement => {
+        console.log('tapResearchOnEventOpened');
+        this.onEventOpened(placement);
+      },
+    );
+
+    this.tapResearchOnEventDismissed = tapResearchEmitter.addListener(
+      'tapResearchOnEventDismissed',
+      () => {
+        console.log('tapResearchOnEventDismissed');
+        // Should make a call to fetch placements again
+        this.onEventDismissed();
+      },
+    );
+
     this.tapResearchOnPlacementReady = tapResearchEmitter.addListener(
       'tapResearchOnPlacementReady',
       placement => {
@@ -113,6 +130,8 @@ class Placements extends React.Component {
     // Here we remove the listeners
     this.tapResearchOnSurveyWallClosed.remove();
     this.tapResearchOnSurveyWallOpened.remove();
+    this.tapResearchOnEventDismissed.remove();
+    this.tapResearchOnEventOpened.remove();
     this.tapResearchOnReceiveReward.remove();
     this.tapResearchOnPlacementReady.remove();
     this.tapResearchOnReceivedRewardCollection.remove();
@@ -123,6 +142,7 @@ class Placements extends React.Component {
     console.log('onPlacementReady: ', placement);
     console.log('Ready?: ', placement.isSurveyWallAvailable);
     console.log('hasHotSurvey?: ', placement.hasHotSurvey);
+	console.log('isEventAvailable?: ', placement.isEventAvailable)
     // Check to make sure we don't already have the placement in state. There is probably a better way to do this.
     if (
       placement.placementCode !== PLACEMENT_CODE_SDK_NOT_READY &&
@@ -172,14 +192,29 @@ class Placements extends React.Component {
   };
 
   onSurveyWallClosed = () => {
+    // Toast.show({
+    //   type: 'info',
+    //   text1: 'Survey Wall Closed',
+    //   position: 'bottom',
+    //   autoHide: false,
+    //   onPress: () => Toast.hide(),
+    // });
+    console.log('onSurveyWallClosed');
+  };
+
+  onEventOpened = placement => {
+    console.log('onEventOpened with placement: ', placement);
+  };
+
+  onEventDismissed = () => {
     Toast.show({
       type: 'info',
-      text1: 'Survey Wall Closed',
+      text1: 'Event Dismissed',
       position: 'bottom',
       autoHide: false,
       onPress: () => Toast.hide(),
     });
-    console.log('onSurveyWallClosed');
+    console.log('onEventDismissed');
   };
 
   onReceiveReward = reward => {
