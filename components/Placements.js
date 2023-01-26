@@ -5,7 +5,7 @@ import {
   tapResearchEmitter,
   PLACEMENT_CODE_SDK_NOT_READY,
 } from 'react-native-tapresearch';
-import {API_TOKEN, UNIQUE_USER_IDENTIFIER} from '../App';
+import {API_TOKEN, USER_IDENTIFIER} from '../App';
 import Toast from 'react-native-toast-message';
 
 class Placements extends React.Component {
@@ -92,7 +92,7 @@ class Placements extends React.Component {
 
     console.log('Initializing TapResearch');
     RNTapResearch.initWithApiToken(API_TOKEN);
-    RNTapResearch.setUniqueUserIdentifier(UNIQUE_USER_IDENTIFIER);
+    RNTapResearch.setUniqueUserIdentifier(USER_IDENTIFIER);
     /*
       Setting to true will use the callback event tapResearchOnReceivedRewardCollection
         You will likely want to use this if you want to handle more than one reward at a time
@@ -200,6 +200,21 @@ class Placements extends React.Component {
     //   onPress: () => Toast.hide(),
     // });
     console.log('onSurveyWallClosed');
+  };
+
+  onEventOpened = placement => {
+    console.log('onEventOpened with placement: ', placement);
+  };
+
+  onEventDismissed = () => {
+    Toast.show({
+      type: 'info',
+      text1: 'Event Dismissed',
+      position: 'bottom',
+      autoHide: false,
+      onPress: () => Toast.hide(),
+    });
+    console.log('onEventDismissed');
   };
 
   onEventOpened = placement => {
