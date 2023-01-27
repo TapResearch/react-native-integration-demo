@@ -69,6 +69,14 @@ class Placements extends React.Component {
       },
     );
 
+    this.tapResearchOnEventDismissed = tapResearchEmitter.addListener(
+      'tapResearchOnEventDismissed',
+      event => {
+        console.log('tapResearchOnEventDismissed', event);
+        this.onEventDismissed(event);
+      },
+    );
+
     this.tapResearchOnPlacementReady = tapResearchEmitter.addListener(
       'tapResearchOnPlacementReady',
       placement => {
@@ -179,7 +187,7 @@ class Placements extends React.Component {
     console.log('onEventOpened with placement: ', placement);
   };
 
-  onEventDismissed = () => {
+  onEventDismissed = placement => {
     Toast.show({
       type: 'info',
       text1: 'Event Dismissed',
@@ -187,7 +195,7 @@ class Placements extends React.Component {
       autoHide: false,
       onPress: () => Toast.hide(),
     });
-    console.log('onEventDismissed');
+    console.log('onEventDismissed', placement);
   };
 
   onReceiveReward = reward => {
