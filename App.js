@@ -11,7 +11,6 @@ LogBox.ignoreAllLogs(true);
 // currently set to server to server
 // export const TAP_RN_API_TOKEN = process.env.TAP_RN_API_TOKEN;
 export const { API_TOKEN, USER_IDENTIFIER } = Config;
-// export const UNIQUE_USER_IDENTIFIER = Config.USER_IDENTIFIER;
 
 // eslint-disable-next-line no-undef
 export default App = () => {

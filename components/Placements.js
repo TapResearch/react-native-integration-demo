@@ -17,11 +17,9 @@ class Placements extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Setting up callbacks');
-    // Start listeners
-    // React Native 0.65+ altered EventEmitter:
-    // - removeSubscription is gone
-    // - addListener returns an unsubscriber instead of a more complex object with eventType etc. We should update this at some point
+    console.log(
+      `Setting up callbacks. API token ${API_TOKEN}, unique user ${USER_IDENTIFIER}`,
+    );
     this.tapResearchOnPlacementUnavailable = tapResearchEmitter.addListener(
       'tapResearchOnPlacementUnavailable',
       placement => {
@@ -54,29 +52,12 @@ class Placements extends React.Component {
       },
     );
 
-    this.tapResearchOnSurveyWallClosed = tapResearchEmitter.addListener(
+    this.tapResearchOnSurveyWallDismissed = tapResearchEmitter.addListener(
       'tapResearchOnSurveyWallDismissed',
       () => {
         console.log('Survey Wall Closed');
         // Should make a call to fetch placements again
         this.onSurveyWallClosed();
-      },
-    );
-
-    this.tapResearchOnEventOpened = tapResearchEmitter.addListener(
-      'tapResearchOnEventOpened',
-      placement => {
-        console.log('tapResearchOnEventOpened');
-        this.onEventOpened(placement);
-      },
-    );
-
-    this.tapResearchOnEventDismissed = tapResearchEmitter.addListener(
-      'tapResearchOnEventDismissed',
-      () => {
-        console.log('tapResearchOnEventDismissed');
-        // Should make a call to fetch placements again
-        this.onEventDismissed();
       },
     );
 
@@ -127,22 +108,13 @@ class Placements extends React.Component {
 
   componentWillUnmount() {
     console.log('unmounting');
-    // Here we remove the listeners
-    this.tapResearchOnSurveyWallClosed.remove();
-    this.tapResearchOnSurveyWallOpened.remove();
-    this.tapResearchOnEventDismissed.remove();
-    this.tapResearchOnEventOpened.remove();
-    this.tapResearchOnReceiveReward.remove();
-    this.tapResearchOnPlacementReady.remove();
-    this.tapResearchOnReceivedRewardCollection.remove();
-    this.tapResearchOnPlacementUnavailable.remove();
   }
 
   onPlacementReady = placement => {
     console.log('onPlacementReady: ', placement);
     console.log('Ready?: ', placement.isSurveyWallAvailable);
     console.log('hasHotSurvey?: ', placement.hasHotSurvey);
-	console.log('isEventAvailable?: ', placement.isEventAvailable)
+    console.log('isEventAvailable?: ', placement.isEventAvailable);
     // Check to make sure we don't already have the placement in state. There is probably a better way to do this.
     if (
       placement.placementCode !== PLACEMENT_CODE_SDK_NOT_READY &&
@@ -200,21 +172,6 @@ class Placements extends React.Component {
     //   onPress: () => Toast.hide(),
     // });
     console.log('onSurveyWallClosed');
-  };
-
-  onEventOpened = placement => {
-    console.log('onEventOpened with placement: ', placement);
-  };
-
-  onEventDismissed = () => {
-    Toast.show({
-      type: 'info',
-      text1: 'Event Dismissed',
-      position: 'bottom',
-      autoHide: false,
-      onPress: () => Toast.hide(),
-    });
-    console.log('onEventDismissed');
   };
 
   onEventOpened = placement => {
