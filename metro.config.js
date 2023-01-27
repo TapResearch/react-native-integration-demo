@@ -4,15 +4,15 @@
  *
  * @format
  */
-// const np = require('node:process');
+const np = require('node:process');
 
 // Used to test local changes
-// const packagePath = np.cwd() + '/../react-native-tapresearch';
+const packagePath = np.cwd() + '/../react-native-tapresearch';
 module.exports = {
   resolver: {
-    // nodeModulesPaths: [np.cwd() + 'ios', packagePath, np.cwd() + '/node_modules'],
+    nodeModulesPaths: [np.cwd() + 'ios', packagePath, np.cwd() + '/node_modules'],
   },
-  // watchFolders: [packagePath],
+  watchFolders: [packagePath],
   transformer: {
     getTransformOptions: async () => ({
       transform: {
