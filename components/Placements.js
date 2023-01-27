@@ -36,7 +36,7 @@ class Placements extends React.Component {
       },
     );
 
-    this.tapResearchOnReceiveReward = tapResearchEmitter.addListener(
+    this.tapResearchOnReceivedReward = tapResearchEmitter.addListener(
       'tapResearchOnReceivedReward',
       reward => {
         console.log('tapResearchOnReceivedReward', reward);
@@ -58,6 +58,14 @@ class Placements extends React.Component {
         console.log('Survey Wall Closed');
         // Should make a call to fetch placements again
         this.onSurveyWallClosed();
+      },
+    );
+
+    this.tapResearchOnEventOpened = tapResearchEmitter.addListener(
+      'tapResearchOnEventOpened',
+      event => {
+        console.log('tapResearchOnEventOpened', event);
+        this.onEventOpened(event);
       },
     );
 
@@ -164,13 +172,6 @@ class Placements extends React.Component {
   };
 
   onSurveyWallClosed = () => {
-    // Toast.show({
-    //   type: 'info',
-    //   text1: 'Survey Wall Closed',
-    //   position: 'bottom',
-    //   autoHide: false,
-    //   onPress: () => Toast.hide(),
-    // });
     console.log('onSurveyWallClosed');
   };
 
