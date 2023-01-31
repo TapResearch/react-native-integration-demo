@@ -4,8 +4,15 @@
  *
  * @format
  */
-
+const np = require('node:process');
 module.exports = {
+  resolver: {
+    nodeModulesPaths: [
+      np.cwd() + 'ios',
+      np.cwd() + 'android',
+      np.cwd() + '/node_modules',
+    ],
+  },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
