@@ -32,7 +32,7 @@ class Placements extends React.Component {
       'tapResearchOnReceivedRewardCollection',
       rewards => {
         console.log('tapResearchOnReceivedRewardCollection', rewards);
-        this.onReceiveRewardCollection(rewards);
+        this.tapResearchOnReceivedRewardCollection(rewards);
       },
     );
 
@@ -40,7 +40,7 @@ class Placements extends React.Component {
       'tapResearchOnReceivedReward',
       reward => {
         console.log('tapResearchOnReceivedReward', reward);
-        this.onReceiveReward(reward);
+        this.onReceivedReward(reward);
       },
     );
 
@@ -198,11 +198,11 @@ class Placements extends React.Component {
     console.log('onEventDismissed', placement);
   };
 
-  onReceiveReward = reward => {
+  onReceivedReward = reward => {
     console.log(reward);
   };
 
-  onReceiveRewardCollection = rewards => {
+  tapResearchOnReceivedRewardCollection = rewards => {
     console.log('rewards: ', rewards);
     const sum = rewards.reduce(
       (partialSum, reward) => partialSum + reward.rewardAmount,
