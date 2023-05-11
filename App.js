@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {LogBox} from 'react-native';
 import Config from 'react-native-config';
-import Placements from './components/./Placements/Placements';
+import Placements from './components/Placements/Placements';
 import RNTapResearch from 'react-native-tapresearch';
 
 // Ignore log notification warnings for the native emitter:

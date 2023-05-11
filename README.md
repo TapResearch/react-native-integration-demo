@@ -10,6 +10,7 @@ react-native link react-native-tapresearch # only if you are using react-native 
 ~~~
 * Pull / Download the repo and copy the files to the new project
 * `cp .env.example .env`, then
+  * If you forget to do this, you will need to clean build your project again after adding the .env file
 * Grab your app api token from the [Supplier Dashboard](https://www.tapresearch.com/supplier_dashboard/overview) and replace the `API_TOKEN` variable in `.env`
 * You can either set the static username for testing in the .env file, or you can set it in the code. In a real app, this would be dynamic based on the user's login.
 * In  build.gradle of your android app add the following lines (see [here for example](https://github.com/TapResearch/react-native-integration-demo/blob/master/android/build.gradle))
