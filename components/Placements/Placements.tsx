@@ -148,6 +148,11 @@ const setup = (
 export default function Placements({}: NewplacementsProps) {
   const [placements, setPlacements] = useState<Placement>([]);
   const [, setButtonPressed] = useState(false);
+  useEffect(() => {
+    RNTapResearch.initWithApiToken(API_TOKEN);
+    RNTapResearch.setUniqueUserIdentifier(USER_IDENTIFIER);
+    RNTapResearch.setReceiveRewardCollection(true);
+  }, []);
 
   useEffect(() => {
     setup(setPlacements, setButtonPressed);

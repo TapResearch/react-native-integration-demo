@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {LogBox} from 'react-native';
 import Config from 'react-native-config';
 import Placements from './components/Placements/Placements';
-import RNTapResearch from 'react-native-tapresearch';
 
 // Ignore log notification warnings for the native emitter:
 LogBox.ignoreAllLogs(true);
@@ -15,12 +14,6 @@ export const {API_TOKEN, USER_IDENTIFIER} = Config;
 
 // eslint-disable-next-line no-undef
 export default App = () => {
-  useEffect(() => {
-    RNTapResearch.initWithApiToken(API_TOKEN);
-    RNTapResearch.setUniqueUserIdentifier(USER_IDENTIFIER);
-    RNTapResearch.setReceiveRewardCollection(true);
-  }, []);
-
   return (
     <>
       <View style={styles.container}>
