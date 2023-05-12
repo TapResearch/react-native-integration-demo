@@ -4,8 +4,8 @@ import {
   tapResearchEmitter,
   PLACEMENT_CODE_SDK_NOT_READY,
 } from 'react-native-tapresearch';
-import {API_TOKEN, USER_IDENTIFIER} from '../../App';
-// import Toast from 'react-native-toast-message';
+import Config from 'react-native-config';
+
 import {Button, StyleSheet, View} from 'react-native';
 import {Placement} from '../../interfaces/placement';
 import Toast from 'react-native-toast-message';
@@ -107,7 +107,7 @@ const setup = (
 ) => {
   setButtonPressed(false);
   console.log(
-    `Setting up callbacks. API token ${API_TOKEN}, unique user ${USER_IDENTIFIER}`,
+    `Setting up callbacks. API token ${Config.API_TOKEN}, unique user ${Config.USER_IDENTIFIER}`,
   );
   tapResearchEmitter.addListener(
     'tapResearchOnPlacementReady',
@@ -149,15 +149,15 @@ export default function Placements({}: NewplacementsProps) {
   const [placements, setPlacements] = useState<Placement>([]);
   const [, setButtonPressed] = useState(false);
   useEffect(() => {
-    RNTapResearch.initWithApiToken(API_TOKEN);
-    RNTapResearch.setUniqueUserIdentifier(USER_IDENTIFIER);
+    RNTapResearch.initWithApiToken(Config.API_TOKEN);
+    RNTapResearch.setUniqueUserIdentifier(Config.USER_IDENTIFIER);
     RNTapResearch.setReceiveRewardCollection(true);
+    console.log('API_TOKEN', Config.API_TOKEN);
+    console.log('USER_IDENTIFIER', Config.USER_IDENTIFIER);
   }, []);
-
   useEffect(() => {
     setup(setPlacements, setButtonPressed);
   }, []);
-
   return (
     <View key={placements.length}>
       {placements.length > 0 &&
